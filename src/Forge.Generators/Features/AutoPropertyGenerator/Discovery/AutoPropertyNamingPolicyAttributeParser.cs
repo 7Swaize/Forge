@@ -13,7 +13,7 @@ internal static class AutoPropertyNamingPolicyAttributeParser {
                 continue;
             }
 
-            return (NamingPolicy)(int)attr.ConstructorArguments[0].Value!;
+            return (NamingPolicy)(byte)attr.ConstructorArguments[0].Value!;
         }
         
         return default;

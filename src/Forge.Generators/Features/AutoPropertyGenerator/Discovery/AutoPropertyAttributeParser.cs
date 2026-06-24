@@ -14,12 +14,12 @@ internal static class AutoPropertyAttributeParser {
                 continue;
             }
 
-            int visibility = (int)attr.ConstructorArguments[0].Value!;
-            int accessors = (int)attr.ConstructorArguments[1].Value!;
-            int returnMode = 0;
+            byte visibility = (byte)attr.ConstructorArguments[0].Value!;
+            byte accessors = (byte)attr.ConstructorArguments[1].Value!;
+            byte returnMode = 0;
 
             if (attr.ConstructorArguments.Length > 1) {
-                returnMode = (int)attr.ConstructorArguments[2].Value!;
+                returnMode = (byte)attr.ConstructorArguments[2].Value!;
             }
 
             return new AutoPropertyAttributeArgs {

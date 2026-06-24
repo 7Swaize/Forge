@@ -6,6 +6,8 @@ using Forge.Generators.Features.AutoPropertyGenerator.Discovery;
 using Forge.Generators.Features.AutoPropertyGenerator.Emit;
 using Forge.Generators.Features.AutoPropertyGenerator.Models;
 using Microsoft.CodeAnalysis;
+using GeneratedSource = (string name, Microsoft.CodeAnalysis.Text.SourceText sourceText);
+
 
 namespace Forge.Generators.Features.AutoPropertyGenerator;
 
@@ -54,7 +56,9 @@ internal sealed class AutoPropertyGenerator : IIncrementalGenerator {
         IncrementalValuesProvider<(GroupTargetModel Left, NamingPolicy Right)> combined = groupings.Combine(namingPolicy);
         
         context.RegisterSourceOutput(combined, static (ctx, tuple) => {
-            EmitAutoProperty.Emit(tuple.Left, tuple.Right);
+            GeneratedSource source = EmitAutoProperty.Emit(tuple.Left, tuple.Right);
+            
+            ctx.AddSource(source.name, source.sourceText);
         });
     }
 }

@@ -25,8 +25,8 @@ internal static class ParseAutoPropertyAttribute {
             return null;
         }
 
-        Accessors accessors = (Accessors)(int)attribute.ConstructorArguments[1].Value!;
-        ReturnMode returnMode = (ReturnMode)(int)attribute.ConstructorArguments[2].Value!;
+        Accessors accessors = (Accessors)(byte)attribute.ConstructorArguments[1].Value!;
+        ReturnMode returnMode = (ReturnMode)(byte)attribute.ConstructorArguments[2].Value!;
 
         if (returnMode is ReturnMode.RefStruct && accessors is not Accessors.Get) {
             return ReturnModeOnUnsupportedAccessorDiagnostic.CreateDiagnostic(

@@ -24,6 +24,7 @@ internal static class EmitAutoProperty {
         }
         
         EmitHelpers.EmitClassDeclarationFromModel(targetGroup.TypeDecl, writer);
+        writer.WriteLine();
 
         foreach (TargetFieldModel field in targetGroup.TargetFields) {
             WriteProperty(writer, field, namingPolicy);

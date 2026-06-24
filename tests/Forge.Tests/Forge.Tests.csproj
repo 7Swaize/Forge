@@ -2,15 +2,18 @@
 
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
-        <Nullable>enable</Nullable>
+        <OutputType>Exe</OutputType>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" />
-      <PackageReference Include="Microsoft.NET.Test.Sdk" />
-      <PackageReference Include="xunit.v3" />
-      <PackageReference Include="xunit.v3.runner.common" />
+      <PackageReference Include="xunit.v3.mtp-v2" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Forge.Annotations\Forge.Annotations.csproj" OutputItemType="Analyzer" />
+        <ProjectReference Include="..\..\src\Forge.RoslynShared\Forge.RoslynShared.csproj" OutputItemType="Analyzer" />
+        <ProjectReference Include="..\..\src\Forge.Analyzers\Forge.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\..\src\Forge.Generators\Forge.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
     <ItemGroup>

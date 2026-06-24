@@ -53,7 +53,7 @@ public static class EmitHelpers {
         
         writer.WriteLine(
             $"{accessibility} {isPartial} {isSealed} {isStatic} {typeKeyword} " +
-            $"{decl.FQNNoGlobal}{typeParams} " +
+            $"{decl.TypeNameNoArityNoFQN}{typeParams} " +
             $"{constraints} {{"
         );
         

@@ -11,7 +11,7 @@ internal record TypeDeclModel {
         IsStatic = symbol.IsStatic;
         IsSealed = symbol.IsSealed;
         
-        FQNNoGlobal = symbol.GetConstructedTypeFQN(false);
+        TypeNameNoArityNoFQN = symbol.Name;
     }
     
     internal ITypeReferenceModel AsTypeRef { get; init; }
@@ -20,5 +20,5 @@ internal record TypeDeclModel {
     internal bool IsStatic { get; init; }
     internal bool IsSealed { get; init; }
     
-    internal string FQNNoGlobal { get; init; }
+    internal string TypeNameNoArityNoFQN { get; init; }
 }
