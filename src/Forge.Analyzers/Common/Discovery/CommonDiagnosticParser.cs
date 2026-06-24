@@ -15,7 +15,7 @@ internal static class CommonDiagnosticParser {
             && declaration.Modifiers.Any(modifier => modifier.IsKind(SyntaxKind.PartialKeyword))
         );
 
-        return isPartial
+        return !isPartial
             ? TypeMustBePartialDiagnostic.CreateDiagnostic(containingType.Locations[0], containingType)
             : null;
     }

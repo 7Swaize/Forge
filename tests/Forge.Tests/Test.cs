@@ -7,7 +7,6 @@ using Xunit;
 namespace Forge.Tests;
 
 public partial class Test {
-    [AutoProperty(Visibility.Internal, Accessors.Get, ReturnMode.RefStruct)]
+    [AutoProperty(Visibility.Internal, Accessors.Get, ReturnMode.RefReadonlyStruct)]
     private Guid _guid;
-    
 }

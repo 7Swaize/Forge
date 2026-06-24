@@ -17,6 +17,7 @@ internal static class EmitAutoProperty {
         using IndentedTextWriter writer = new(sr);
         
         EmitHelpers.EmitGeneratedFileHeader(writer);
+        writer.WriteLine();
         
         if (targetGroup.TypeDecl.AsTypeRef.Namespace is not null) {
             writer.WriteLine($"namespace {targetGroup.TypeDecl.AsTypeRef.Namespace} {{");
@@ -24,7 +25,6 @@ internal static class EmitAutoProperty {
         }
         
         EmitHelpers.EmitClassDeclarationFromModel(targetGroup.TypeDecl, writer);
-        writer.WriteLine();
 
         foreach (TargetFieldModel field in targetGroup.TargetFields) {
             WriteProperty(writer, field, namingPolicy);
@@ -45,14 +45,15 @@ internal static class EmitAutoProperty {
 
     private static void WriteProperty(IndentedTextWriter writer, TargetFieldModel field, NamingPolicy namingPolicy) {
         string visibility = ((Accessibility)field.TargetVisibility).AsDeclString();
-        string returnMode = GetReturnModeStringRepr(field.TargetReturnMode);
+        string declReturnMode = GetDeclReturnModeStringRepr(field.TargetReturnMode);
+        string exprReturnMode = GetExprReturnModeStringRepr(field.TargetReturnMode);
         string propertyName = NamingPolicyEngine.Transform(field.Name, namingPolicy) ?? field.Name;
         
-        writer.Write($"{visibility} {returnMode} {field.FieldType.FQNGenericBased} {propertyName}");
+        writer.Write($"{visibility} {declReturnMode} {field.FieldType.FQNGenericBased} {propertyName}");
 
         switch (field.TargetAccessors) {
             case Accessors.Get:
-                writer.WriteLine($" => {returnMode} {field.Name};");
+                writer.WriteLine($" => {exprReturnMode} {field.Name};");
                 break;
             case Accessors.Set:
                 writer.WriteLine($" {{ set => {field.Name} = value; }}");
@@ -77,11 +78,21 @@ internal static class EmitAutoProperty {
                 ThrowHelpers.ThrowUnhandledBranch(field.TargetAccessors);
                 break;
         }
+        
+        writer.WriteLine();
     }
 
-    private static string GetReturnModeStringRepr(ReturnMode returnMode) {
+    private static string GetDeclReturnModeStringRepr(ReturnMode returnMode) {
         return returnMode switch {
             ReturnMode.RefStruct => "ref",
+            ReturnMode.RefReadonlyStruct => "ref readonly",
+            _ => ""
+        };
+    }
+
+    private static string GetExprReturnModeStringRepr(ReturnMode returnMode) {
+        return returnMode switch {
+            ReturnMode.RefStruct or ReturnMode.RefReadonlyStruct => "ref",
             _ => ""
         };
     }

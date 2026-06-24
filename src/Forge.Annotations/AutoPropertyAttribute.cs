@@ -20,5 +20,6 @@ public enum Accessors : byte {
 
 public enum ReturnMode : byte {
     Default = 0,
-    RefStruct = 1
+    RefStruct = 1,
+    RefReadonlyStruct = 2
 }

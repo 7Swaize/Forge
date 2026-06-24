@@ -2,8 +2,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Forge.Analyzers.Common.Diagnostics;
 
-internal static class TypeMustBePartialDiagnostic
-{
+internal static class TypeMustBePartialDiagnostic {
     internal static DiagnosticDescriptor CreateDescriptor() =>
         new DiagnosticDescriptor(
             id: "FRG0001",
@@ -13,7 +12,7 @@ internal static class TypeMustBePartialDiagnostic
             defaultSeverity: DiagnosticSeverity.Error,
             isEnabledByDefault: true,
             description:
-            "The target type must be declared with the 'partial' modifier in order to support source generation.",
+                "The target type must be declared with the 'partial' modifier in order to support source generation.",
             helpLinkUri: null
         );
 
