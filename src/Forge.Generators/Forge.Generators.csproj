@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <UseRoslynPackages>true</UseRoslynPackages>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="..\Forge.RoslynShared\Forge.RoslynShared.csproj" />
+        <ProjectReference Include="..\Forge.Annotations\Forge.Annotations.csproj" />
+    </ItemGroup>
+    
+</Project>
