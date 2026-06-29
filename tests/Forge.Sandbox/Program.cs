@@ -28,3 +28,10 @@ public partial class Foo<T1, T2> where T1 : class {
     [AutoProperty(Visibility.Public, Accessors.Get)]
     private int _xmlParser;
 }
+
+
+
+public partial struct Foo {
+    [AutoProperty(Visibility.Public, Accessors.Get)]
+    private int _value;
+}

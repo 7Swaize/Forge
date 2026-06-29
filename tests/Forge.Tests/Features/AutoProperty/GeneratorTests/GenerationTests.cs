@@ -75,6 +75,25 @@ public sealed class GenerationTests {
             .UseParameters(visibility, accessors, returnMode);
     }
 
+    [Fact]
+    internal async Task AutoPropertyGenerator_EmitsAutoProperty_RespectsContainerTypeStruct() {
+        GeneratorDriverRunResult result = GeneratorTestHelper.RunGenerator<AutoPropertyGenerator>(
+            $$"""
+              using Forge.Annotations;
+
+              [assembly: AutoPropertyNamingPolicy(NamingPolicy.PascalCase)]
+
+              public partial struct Foo {
+                  [AutoProperty(Visibility.Public, Accessors.Get)]
+                  private int _value;
+              }
+              """
+        );
+
+        _ = await Verify(result)
+            .HashParameters();
+    }
+
     [Theory]
     [MemberData(nameof(AllNamingPolicies))]
     internal async Task AutoPropertyGenerator_NamingPolicyRespectsUnderscorePrefix(NamingPolicy namingPolicy) {

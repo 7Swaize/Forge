@@ -34,7 +34,7 @@ public static class EmitHelpers {
         
         string accessibility = decl.AccessModifier.AsDeclString();
         string isPartial = decl.IsPartial ? "partial " : string.Empty;
-        string isSealed = decl.IsSealed ? "sealed " : string.Empty;
+        string isSealed = decl.IsSealed && typeRef.TypeKind is not TypeKind.Struct ? "sealed " : string.Empty;
         string isStatic = decl.IsStatic ? "static " : string.Empty;
 
         string typeKeyword = typeRef.TypeKind switch {
