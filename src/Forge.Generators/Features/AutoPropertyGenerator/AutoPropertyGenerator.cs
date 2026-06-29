@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Forge.Annotations;
 using Forge.Generators.Common.Models;
 using Forge.Generators.Features.AutoPropertyGenerator.Discovery;
@@ -10,8 +9,6 @@ using Forge.Generators.Features.AutoPropertyGenerator.Emit;
 using Forge.Generators.Features.AutoPropertyGenerator.Models;
 using Microsoft.CodeAnalysis;
 using GeneratedSource = (string name, Microsoft.CodeAnalysis.Text.SourceText sourceText);
-
-[assembly: InternalsVisibleTo("Forge.Tests")]
 
 namespace Forge.Generators.Features.AutoPropertyGenerator;
 

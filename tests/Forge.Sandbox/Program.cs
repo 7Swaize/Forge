@@ -1,8 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using Forge.Annotations;
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor/
+#pragma warning disable CS0169 // Field is never used
+
 [assembly: AutoPropertyNamingPolicy(NamingPolicy.PascalCase)]
+
 
 public static class Program {
     public static void Main(string[] args) { }
@@ -10,9 +13,10 @@ public static class Program {
 
 
 public partial class Test {
-    [AutoProperty(Visibility.Internal, Accessors.Get, ReturnMode.RefReadonlyStruct)]
+    [AutoProperty(Visibility.Internal, Accessors.Get, ReturnMode.Default)]
     private Guid _guid;
 }
+
 
 public partial class Foo<T1, T2> where T1 : class {
     [AutoProperty(Visibility.Internal, Accessors.Get, ReturnMode.RefReadonlyStruct)]

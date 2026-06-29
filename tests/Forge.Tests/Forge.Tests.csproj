@@ -32,12 +32,8 @@
     <ItemGroup>
         <ProjectReference Include="..\..\src\Forge.Annotations\Forge.Annotations.csproj" OutputItemType="Analyzer" />
         <ProjectReference Include="..\..\src\Forge.RoslynShared\Forge.RoslynShared.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\..\src\Forge.Analyzers\Forge.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\..\src\Forge.Analyzers\Forge.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
         <ProjectReference Include="..\..\src\Forge.Generators\Forge.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Features\AutoProperty\AnalyzerTests\" />
     </ItemGroup>
     
 
