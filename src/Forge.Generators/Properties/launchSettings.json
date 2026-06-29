@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DebugRoslynComponent": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "../../tests/Forge.Sandbox/Forge.Sandbox.csproj"
+    }
+  }
+}

@@ -20,6 +20,8 @@ public static class EmitHelpers {
             //------------------------------------------------------------------------------
             """);
         
+        writer.WriteLine();
+        
         // Field declared but never used
         writer.WriteLine($"#pragma warning disable 169");
     }

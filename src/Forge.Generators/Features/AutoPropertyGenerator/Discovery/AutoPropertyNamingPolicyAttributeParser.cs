@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Forge.Annotations;
 using Microsoft.CodeAnalysis;
 
@@ -12,7 +13,7 @@ internal static class AutoPropertyNamingPolicyAttributeParser {
             if (!SymbolEqualityComparer.Default.Equals(attr.AttributeClass, targetAttr)) {
                 continue;
             }
-
+            
             return (NamingPolicy)(byte)attr.ConstructorArguments[0].Value!;
         }
         

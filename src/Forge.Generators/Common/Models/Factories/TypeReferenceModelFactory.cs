@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Forge.Generators.Common.Models.Collections;
@@ -9,8 +10,8 @@ namespace Forge.Generators.Common.Models.Factories;
 
 internal sealed class TypeReferenceModelFactory {
     private sealed record TypeReferenceModel : ITypeReferenceModel {
-        internal TypeReferenceModel(ITypeSymbol symbol) {
-            _cache.Add(symbol, this);
+        internal TypeReferenceModel(ITypeSymbol symbol, TypeReferenceModelFactory factory) {
+            factory._cache.Add(symbol, this);
 
             FQNGenericOmitted = symbol.GetFQNWithGenericsOmitted();
             FQNGenericBased = symbol.GetGenericDefinitionFQN();
@@ -30,15 +31,15 @@ internal sealed class TypeReferenceModelFactory {
 
                 if (IsGeneric && !IsBasedOnTypeParameter && !namedTypeSymbol.IsUnboundGenericType) {
                     UnboundGenericTypeRef =
-                        CreateOrGetTypeReferenceModel(namedTypeSymbol.ConstructUnboundGenericType());
+                        factory.CreateOrGetTypeReferenceModel(namedTypeSymbol.ConstructUnboundGenericType());
                     // TODO: Capture alloc
                     TypeArguments = [
                         .. namedTypeSymbol.TypeArguments.Select(typeSymbol =>
-                            CreateOrGetTypeReferenceModel(typeSymbol))
+                            factory.CreateOrGetTypeReferenceModel(typeSymbol))
                     ];
                     TypeParameters = [
                         .. namedTypeSymbol.TypeParameters.Select(typeParameterSymbol =>
-                            CreateOrGetTypeReferenceModel(typeParameterSymbol))
+                            factory.CreateOrGetTypeReferenceModel(typeParameterSymbol))
                     ];
                 }
                 else {
@@ -48,15 +49,15 @@ internal sealed class TypeReferenceModelFactory {
                 }
                 
                 BaseType = namedTypeSymbol.BaseType != null
-                    ? CreateOrGetTypeReferenceModel(namedTypeSymbol.BaseType)
+                    ? factory.CreateOrGetTypeReferenceModel(namedTypeSymbol.BaseType)
                     : null;
                 ImmediateInterfaces = [
                     .. namedTypeSymbol.Interfaces.Select(interfaceSymbol =>
-                        CreateOrGetTypeReferenceModel(interfaceSymbol))
+                        factory.CreateOrGetTypeReferenceModel(interfaceSymbol))
                 ];
                 AllInterfaces = [
                     .. namedTypeSymbol.AllInterfaces.Select(interfaceSymbol =>
-                        CreateOrGetTypeReferenceModel(interfaceSymbol))
+                        factory.CreateOrGetTypeReferenceModel(interfaceSymbol))
                 ];
             }
 
@@ -130,16 +131,21 @@ internal sealed class TypeReferenceModelFactory {
         private readonly WeakReference<ITypeSymbol> _underlyingTypeSymbol;
         public ITypeSymbol UnderlyingTypeSymbol => _underlyingTypeSymbol.GetTargetOrThrow();
     }
+    
+    private static readonly ConditionalWeakTable<Compilation, TypeReferenceModelFactory> _factoryCache = new();
 
-    // TODO: Check this. Because we are not using 'SymbolEqualityComparer.Default' we could be getting duplicate creations.
-    private static readonly ConditionalWeakTable<ITypeSymbol, ITypeReferenceModel> _cache = new();
+    internal static TypeReferenceModelFactory GetFactory(Compilation compilation) =>
+        _factoryCache.GetValue(compilation, static _ => new TypeReferenceModelFactory());
 
-    internal static ITypeReferenceModel CreateOrGetTypeReferenceModel(ITypeSymbol typeSymbol) {
-        if (_cache.TryGetValue(typeSymbol, out var cached)) {
+    // Since lifetime of dictionary is tied to the factory and the factories lifetime is tied to the compilation, this shouldn't leak.
+    private readonly Dictionary<ITypeSymbol, ITypeReferenceModel> _cache = new(SymbolEqualityComparer.Default);
+
+    internal ITypeReferenceModel CreateOrGetTypeReferenceModel(ITypeSymbol typeSymbol) {
+        if (_cache.TryGetValue(typeSymbol, out ITypeReferenceModel? cached)) {
             return cached;
         }
-
-        ITypeReferenceModel @new = new TypeReferenceModel(typeSymbol);
+        
+        ITypeReferenceModel @new = new TypeReferenceModel(typeSymbol, this);
         return @new;
     }
 }

@@ -8,10 +8,12 @@ namespace Forge.Generators.Features.AutoPropertyGenerator.Models;
 
 internal sealed record TargetFieldModel {
     internal TargetFieldModel(in GeneratorAttributeSyntaxContext context) {
-        ContainingTypeDecl = new TypeDeclModel(context.TargetSymbol.ContainingType);
+        TypeReferenceModelFactory typeRefFactory = TypeReferenceModelFactory.GetFactory(context.SemanticModel.Compilation);
+        
+        ContainingTypeDecl = new TypeDeclModel(context.TargetSymbol.ContainingType, typeRefFactory);
         
         IFieldSymbol target = (IFieldSymbol)context.TargetSymbol;
-        FieldType = TypeReferenceModelFactory.CreateOrGetTypeReferenceModel(target.Type);
+        FieldType = typeRefFactory.CreateOrGetTypeReferenceModel(target.Type);
         Name = target.Name;
 
         AutoPropertyAttributeArgs args = AutoPropertyAttributeParser.ParseArgs(in context);

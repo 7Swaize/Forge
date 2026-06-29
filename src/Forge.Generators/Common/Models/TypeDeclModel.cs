@@ -4,8 +4,8 @@ using Microsoft.CodeAnalysis;
 namespace Forge.Generators.Common.Models;
 
 internal record TypeDeclModel {
-    internal TypeDeclModel(INamedTypeSymbol symbol) {
-        AsTypeRef = TypeReferenceModelFactory.CreateOrGetTypeReferenceModel(symbol);
+    internal TypeDeclModel(INamedTypeSymbol symbol, TypeReferenceModelFactory typeRefFactory) {
+        AsTypeRef = typeRefFactory.CreateOrGetTypeReferenceModel(symbol);
         AccessModifier = symbol.DeclaredAccessibility;
         IsPartial = symbol.IsPartialDeclaration();
         IsStatic = symbol.IsStatic;

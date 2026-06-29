@@ -26,8 +26,12 @@ internal static class EmitAutoProperty {
         
         EmitHelpers.EmitClassDeclarationFromModel(targetGroup.TypeDecl, writer);
 
-        foreach (TargetFieldModel field in targetGroup.TargetFields) {
-            WriteProperty(writer, field, namingPolicy);
+        for (int i = 0; i < targetGroup.TargetFields.Length; i++) {
+            WriteProperty(writer, targetGroup.TargetFields[i], namingPolicy);
+
+            if (i < targetGroup.TargetFields.Length - 1) {
+                writer.WriteLine();
+            }
         }
         
         // closes class
@@ -78,8 +82,6 @@ internal static class EmitAutoProperty {
                 ThrowHelpers.ThrowUnhandledBranch(field.TargetAccessors);
                 break;
         }
-        
-        writer.WriteLine();
     }
 
     private static string GetDeclReturnModeStringRepr(ReturnMode returnMode) {

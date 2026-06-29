@@ -18,7 +18,7 @@ internal static class AutoPropertyAttributeParser {
             byte accessors = (byte)attr.ConstructorArguments[1].Value!;
             byte returnMode = 0;
 
-            if (attr.ConstructorArguments.Length > 1) {
+            if (attr.ConstructorArguments.Length > 2) {
                 returnMode = (byte)attr.ConstructorArguments[2].Value!;
             }
 
