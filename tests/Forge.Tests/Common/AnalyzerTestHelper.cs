@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Forge.Generators.Features.AutoPropertyGenerator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;

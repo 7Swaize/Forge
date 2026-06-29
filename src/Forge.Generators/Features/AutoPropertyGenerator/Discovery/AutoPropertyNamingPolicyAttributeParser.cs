@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Forge.Annotations;
 using Microsoft.CodeAnalysis;
 
