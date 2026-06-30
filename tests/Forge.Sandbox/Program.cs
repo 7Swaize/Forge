@@ -3,6 +3,8 @@ using Forge.Annotations;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor/
 #pragma warning disable CS0169 // Field is never used
+#pragma warning disable CS0219 // Variable is assigned but its value is never used
+
 
 [assembly: AutoPropertyNamingPolicy(NamingPolicy.PascalCase)]
 
