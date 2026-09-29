@@ -8,7 +8,7 @@ namespace Forge.Tests.Features.AutoProperty.AnalyzerTests;
 public sealed partial class Tests {
     [Fact]
     public async Task ContainingTypeMustBePartial_DoesNotAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAttributeAnalyzer>(
             """
             using Forge.Annotations;
             
@@ -23,7 +23,7 @@ public sealed partial class Tests {
     
     [Fact]
     public async Task ContainingTypeMustBePartial_DoesAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAttributeAnalyzer>(
             """
             using Forge.Annotations;
 

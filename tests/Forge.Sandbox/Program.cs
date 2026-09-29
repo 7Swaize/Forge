@@ -5,12 +5,15 @@ using Forge.Annotations;
 #pragma warning disable CS0169 // Field is never used
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
 
-
 [assembly: AutoPropertyNamingPolicy(NamingPolicy.PascalCase)]
 
-
 public static class Program {
-    public static void Main(string[] args) { }
+    private const int val = 1;
+    
+    public static void Main(string[] args) {
+        int valNonConst = 2;
+        A.B(val); 
+    }
 }
 
 
@@ -36,4 +39,14 @@ public partial class Foo<T1, T2> where T1 : class {
 public partial struct Foo {
     [AutoProperty(Visibility.Public, Accessors.Get)]
     private int _value;
+}
+
+public static class A {
+    public static void B([CompileTimeConstant] int somethingConst) {
+        
+    }
+
+    public static void C([CompileTimeConstant] DateTime date) {
+        
+    }
 }

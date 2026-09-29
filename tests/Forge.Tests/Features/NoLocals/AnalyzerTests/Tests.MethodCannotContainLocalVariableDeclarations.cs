@@ -8,7 +8,7 @@ namespace Forge.Tests.Features.NoLocalVariables.AnalyzerTests;
 public sealed partial class Tests {
     [Fact]
     public async Task CannotContainLocalVariableDecl_WhenMethodLacksAttribute_DoesNotAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalVariablesAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalsAttributeAnalyzer>(
             """
             class C {
                 void Method() {
@@ -21,7 +21,7 @@ public sealed partial class Tests {
     
     [Fact]
     public async Task CannotContainLocalVariableDecl_NoDeclaration_DoesNotAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalVariablesAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalsAttributeAnalyzer>(
             """
             using Forge.Annotations;
 
@@ -34,7 +34,7 @@ public sealed partial class Tests {
     
     [Fact]
     public async Task CannotContainLocalVariableDecl_SingleLocalDeclaration_DoesAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalVariablesAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalsAttributeAnalyzer>(
             """
             using Forge.Annotations;
 
@@ -50,7 +50,7 @@ public sealed partial class Tests {
 
     [Fact]
     public async Task CannotContainLocalVariableDecl_MultipleLocalDeclarations_DoesAlertIndependently() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalVariablesAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalsAttributeAnalyzer>(
             """
             using Forge.Annotations;
 
@@ -67,7 +67,7 @@ public sealed partial class Tests {
     
     [Fact]
     public async Task CannotContainLocalVariableDecl_LocalNestedInsideControlFlow_DoesAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalVariablesAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalsAttributeAnalyzer>(
             """
             using Forge.Annotations;
             
@@ -88,7 +88,7 @@ public sealed partial class Tests {
     
     [Fact]
     public async Task CannotContainLocalVariableDecl_WhenAnnotatedMethodIsExpressionBodied_DoesNotAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalVariablesAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalsAttributeAnalyzer>(
             """
             using Forge.Annotations;
             
@@ -103,7 +103,7 @@ public sealed partial class Tests {
     // so locals inside the local function body must NOT trigger the diagnostic.
     [Fact]
     public async Task CannotContainLocalVariableDecl_ForLocalsInsideLocalFunction_DoesNotAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalVariablesAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalsAttributeAnalyzer>(
             """
             using Forge.Annotations;
             
@@ -126,7 +126,7 @@ public sealed partial class Tests {
     // locals inside a lambda body must NOT trigger.
     [Fact]
     public async Task CannotContainLocalVariableDecl_ForLocalsInsideLambdaBody_DoesNotAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalVariablesAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalsAttributeAnalyzer>(
             """
             using System;
             using Forge.Annotations;
@@ -146,7 +146,7 @@ public sealed partial class Tests {
     
     [Fact]
     public async Task CannotContainerLocalVariableDecl_ForLocalsInsideAnonymousDelegate_DoesNotAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalVariablesAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<NoLocalsAttributeAnalyzer>(
             """
             using System;
             using Forge.Annotations;

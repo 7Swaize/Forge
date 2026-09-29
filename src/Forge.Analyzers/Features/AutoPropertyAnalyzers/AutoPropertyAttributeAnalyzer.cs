@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Forge.Analyzers.Features.AutoPropertyAnalyzer;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-internal sealed class AutoPropertyAnalyzer : DiagnosticAnalyzer {
+internal sealed class AutoPropertyAttributeAnalyzer : DiagnosticAnalyzer {
     public override void Initialize(AnalysisContext context) {
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
         context.EnableConcurrentExecution();

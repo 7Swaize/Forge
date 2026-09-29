@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Forge.Analyzers.Features.NoLocalsAnalyzer;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-internal sealed class NoLocalVariablesAnalyzer : DiagnosticAnalyzer {
+internal sealed class NoLocalsAttributeAnalyzer : DiagnosticAnalyzer {
     public override void Initialize(AnalysisContext context) {
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
         context.EnableConcurrentExecution();

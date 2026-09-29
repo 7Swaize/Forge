@@ -8,7 +8,7 @@ namespace Forge.Tests.Features.AutoProperty.AnalyzerTests;
 public sealed partial class Tests {
     [Fact]
     public async Task ReturnModeOnUnsupportedAccessor_Get_Default_DoesNotAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAttributeAnalyzer>(
             """
             using Forge.Annotations;
 
@@ -23,7 +23,7 @@ public sealed partial class Tests {
     
     [Fact]
     public async Task ReturnModeOnUnsupportedAccessor_Get_RefStruct_DoesNotAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAttributeAnalyzer>(
             """
             using Forge.Annotations;
 
@@ -38,7 +38,7 @@ public sealed partial class Tests {
     
     [Fact]
     public async Task ReturnModeOnUnsupportedAccessor_Get_RefReadonlyStruct_DoesNotAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAttributeAnalyzer>(
             """
             using Forge.Annotations;
 
@@ -53,7 +53,7 @@ public sealed partial class Tests {
     
     [Fact]
     public async Task ReturnModeOnUnsupportedAccessor_Set_RefStruct_DoesAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAttributeAnalyzer>(
             """
             using Forge.Annotations;
 
@@ -68,7 +68,7 @@ public sealed partial class Tests {
     
     [Fact]
     public async Task ReturnModeOnUnsupportedAccessor_Set_RefReadonlyStruct_DoesAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAttributeAnalyzer>(
             """
             using Forge.Annotations;
 
@@ -83,7 +83,7 @@ public sealed partial class Tests {
     
     [Fact]
     public async Task ReturnModeOnUnsupportedAccessor_GetAndSet_RefStruct_DoesAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAttributeAnalyzer>(
             """
             using Forge.Annotations;
 
@@ -98,7 +98,7 @@ public sealed partial class Tests {
     
     [Fact]
     public async Task ReturnModeOnUnsupportedAccessor_GetAndSet_RefReadonlyStruct_DoesAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAttributeAnalyzer>(
             """
             using Forge.Annotations;
 
@@ -113,7 +113,7 @@ public sealed partial class Tests {
     
     [Fact]
     public async Task ReturnModeOnUnsupportedAccessor_GetAndInit_RefStruct_DoesAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAttributeAnalyzer>(
             """
             using Forge.Annotations;
 
@@ -128,7 +128,7 @@ public sealed partial class Tests {
     
     [Fact]
     public async Task ReturnModeOnUnsupportedAccessor_GetAndInit_RefReadonlyStruct_DoesAlert() =>
-        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAnalyzer>(
+        await AnalyzerTestHelper.CreateAnalyzerTest<AutoPropertyAttributeAnalyzer>(
             """
             using Forge.Annotations;
 
