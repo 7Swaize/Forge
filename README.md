@@ -3,10 +3,11 @@
 A collection of Roslyn generators and analyzers. These are triggered via attributes.
 
 If you would like to propose an attribute, please open an issue. I will review the proposal and (probably) implement it.
+
 ## Installing Forge
 
 ```bash
-dotnet add package ForgeGen
+dotnet add package ForgeGen --prerelease
 ```
 
 ## Attributes
