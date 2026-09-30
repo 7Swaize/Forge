@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <!-- See ref: https://github.com/ImmediatePlatform/Immediate.Handlers/blob/main/src/Immediate.Handlers/Immediate.Handlers.csproj -->
+
+    <PropertyGroup Label="Packaging">
+        <IsPackable>true</IsPackable>
+        <PackageId>ForgeGen</PackageId>
+        <Version>0.1.0-preview.1</Version>
+
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+        <NoWarn>$(NoWarn);NU5128</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Label="NuGet">
+        <Title>ForgeGen</Title>
+        <Description>Roslyn analyzers and source generators for C#.</Description>
+        <Authors>7Swaize</Authors>
+        <Copyright>© 2026 7Swaize</Copyright>
+        <PackageTags>roslyn;analyzers;source-generator</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageProjectUrl>https://github.com/7Swaize/Forge</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/7Swaize/Forge</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Forge.Annotations\Forge.Annotations.csproj" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Forge.RoslynShared\Forge.RoslynShared.csproj" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Forge.Analyzers\Forge.Analyzers.csproj" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Forge.Generators\Forge.Generators.csproj" ReferenceOutputAssembly="false" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Out>bin\$(Configuration)\$(TargetFramework)</Out>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="..\Forge.Annotations\$(Out)\Forge.Annotations.dll"
+              Pack="true" PackagePath="lib/$(TargetFramework)" Visible="false" />
+        <None Include="..\Forge.Annotations\$(Out)\Forge.Annotations.xml"
+              Pack="true" PackagePath="lib/$(TargetFramework)" Visible="false" />
+
+        <None Include="..\Forge.Annotations\$(Out)\Forge.Annotations.dll"
+              Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        <None Include="..\Forge.RoslynShared\$(Out)\Forge.RoslynShared.dll"
+              Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        <None Include="..\Forge.Analyzers\$(Out)\Forge.Analyzers.dll"
+              Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        <None Include="..\Forge.Generators\$(Out)\Forge.Generators.dll"
+              Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+
+        <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+</Project>
