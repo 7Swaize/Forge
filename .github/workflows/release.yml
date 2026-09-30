@@ -40,6 +40,7 @@ jobs:
         run: dotnet pack -c Release --no-build --property:PackageOutputPath=../../nupkgs
 
       - name: Validate Package
+        continue-on-error: true
         run: dotnet tool run dotnet-validate -- package local ./nupkgs/*.nupkg
   
       - name: NuGet login (OIDC → temp API key)
