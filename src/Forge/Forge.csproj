@@ -8,7 +8,6 @@
     <PropertyGroup Label="Packaging">
         <IsPackable>true</IsPackable>
         <PackageId>ForgeGen</PackageId>
-        <Version>0.1.0-preview.1</Version>
 
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
