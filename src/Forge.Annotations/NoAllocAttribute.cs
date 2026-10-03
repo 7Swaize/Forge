@@ -2,8 +2,21 @@ using System;
 
 namespace Forge.Annotations;
 
-public class NoAllocAttribute(AllocKinds banned = AllocKinds.Heap) : Attribute {
+[AttributeUsage(
+    AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Property |
+    AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Delegate
+)]
+public sealed class NoAllocAttribute(AllocKinds banned = AllocKinds.Heap) : Attribute {
     public AllocKinds Banned { get; private set; } = banned;
+}
+
+
+[AttributeUsage(
+    AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Property |
+    AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Delegate
+)]
+public sealed class AllocAllowedAttribute(AllocKinds allowed = AllocKinds.All) : Attribute {
+    public AllocKinds Allowed { get; private set; } = allowed;    
 }
 
 
