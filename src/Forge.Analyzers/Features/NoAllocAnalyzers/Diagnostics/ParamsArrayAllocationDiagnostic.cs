@@ -6,8 +6,8 @@ internal static class ParamsArrayAllocationDiagnostic {
     internal static DiagnosticDescriptor CreateDescriptor() =>
         new DiagnosticDescriptor(
             id: "FRG0402",
-            title: "Creation of params array causes heap allocation",
-            messageFormat: "Marked concept {0} forbids heap allocations",
+            title: "Heap allocation: Implicit params array creation",
+            messageFormat: "Implicit allocation: call to method with 'params' parameter allocates '{0}' array",
             category: "Usage",
             defaultSeverity: DiagnosticSeverity.Error,
             isEnabledByDefault: true,
@@ -15,10 +15,10 @@ internal static class ParamsArrayAllocationDiagnostic {
             helpLinkUri: null
         );
     
-    internal static Diagnostic CreateDiagnostic(Location location, ISymbol concept) =>
+    internal static Diagnostic CreateDiagnostic(Location location, ITypeSymbol arrayType) =>
         Diagnostic.Create(
             CreateDescriptor(),
             location,
-            concept.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)
+            arrayType.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)
         );
 }

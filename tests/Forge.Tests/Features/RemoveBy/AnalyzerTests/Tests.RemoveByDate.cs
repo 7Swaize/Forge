@@ -145,6 +145,22 @@ public sealed partial class Tests {
             [RemoveBy("2000-01-01")] interface {|FRG0501:IThing|} { }
             """
         ).RunAsync(TestContext.Current.CancellationToken);
+    
+    [Fact]
+    public async Task RemoveBy_MultipleFieldDeclarationsInOneLine_DoesAlertForEach() =>
+        await AnalyzerTestHelper.CreateAnalyzerTest<RemoveByAttributeAnalyzer>(
+            """
+            using Forge.Annotations;
+
+            class C {
+                [RemoveBy("2999-12-31")]
+                int {|FRG0500:F1|}, {|FRG0500:F2|}, {|FRG0500:F3|};
+
+                [RemoveBy("2000-01-01")]
+                string {|FRG0501:F4|} = "", {|FRG0501:F5|} = "";
+            }
+            """
+        ).RunAsync(TestContext.Current.CancellationToken);
 
     [Fact]
     public async Task RemoveBy_AnnotatedTypeAndAnnotatedMember_DoesAlertIndependently() =>

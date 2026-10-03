@@ -2,12 +2,12 @@ using Microsoft.CodeAnalysis;
 
 namespace Forge.Analyzers.Features.NoAllocAnalyzers.Diagnostics;
 
-internal static class NewOperatorOnReferenceTypeAllocationDiagnostic {
+internal static class HeapAllocationObjectCreationDiagnostic {
     internal static DiagnosticDescriptor CreateDescriptor() =>
         new DiagnosticDescriptor(
             id: "FRG0403",
-            title: "'new' operator on reference type causes heap allocation",
-            messageFormat: "Marked concept {0} forbids heap allocations",
+            title: "Heap allocation: Object creation",
+            messageFormat: "Explicit allocation: creation of reference type '{0}' allocates on heap",
             category: "Usage",
             defaultSeverity: DiagnosticSeverity.Error,
             isEnabledByDefault: true,
@@ -15,10 +15,10 @@ internal static class NewOperatorOnReferenceTypeAllocationDiagnostic {
             helpLinkUri: null
         );
 
-    internal static Diagnostic CreateDiagnostic(Location location, ISymbol concept) =>
+    internal static Diagnostic CreateDiagnostic(Location location, ISymbol targetType) =>
         Diagnostic.Create(
             CreateDescriptor(),
             location,
-            concept.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)
+            targetType.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)
         );
 }

@@ -6,8 +6,8 @@ internal static class ClosureAllocationDiagnostic {
     internal static DiagnosticDescriptor CreateDescriptor() =>
         new DiagnosticDescriptor(
             id: "FRG0401",
-            title: "Capturing delegate causes heap allocation",
-            messageFormat: "Marked concept {0} forbids heap allocations",
+            title: "Heap allocation: Delegate creation",
+            messageFormat: "Delegate allocation: new `{0}` instance creation.",
             category: "Usage",
             defaultSeverity: DiagnosticSeverity.Error,
             isEnabledByDefault: true,
@@ -15,10 +15,10 @@ internal static class ClosureAllocationDiagnostic {
             helpLinkUri: null
         );
 
-    internal static Diagnostic CreateDiagnostic(Location location, ISymbol concept) =>
+    internal static Diagnostic CreateDiagnostic(Location location, ITypeSymbol delegateInstanceType) =>
         Diagnostic.Create(
             CreateDescriptor(),
             location,
-            concept.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)
+            delegateInstanceType.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)
         );
 }
