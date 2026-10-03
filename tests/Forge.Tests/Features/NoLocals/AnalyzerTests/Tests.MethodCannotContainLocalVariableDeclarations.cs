@@ -3,7 +3,7 @@ using Forge.Analyzers.Features.NoLocalsAnalyzer;
 using Forge.Tests.Common;
 using Xunit;
 
-namespace Forge.Tests.Features.NoLocalVariables.AnalyzerTests;
+namespace Forge.Tests.Features.NoLocals.AnalyzerTests;
 
 public sealed partial class Tests {
     [Fact]

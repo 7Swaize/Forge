@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Forge.Analyzers.Features.RemoveByAnalyzers;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-internal sealed class NoLocalsAttributeAnalyzer : DiagnosticAnalyzer {
+internal sealed class RemoveByAttributeAnalyzer : DiagnosticAnalyzer {
     private const string KDateTimeFormat = "yyyy-MM-dd";
     
     public override void Initialize(AnalysisContext context) {
@@ -18,7 +18,7 @@ internal sealed class NoLocalsAttributeAnalyzer : DiagnosticAnalyzer {
 
         context.RegisterCompilationStartAction(static compilationContext => {
             INamedTypeSymbol? targetAttr =
-                compilationContext.Compilation.GetTypeByMetadataName(typeof(NoLocalVariablesAttribute).FullName!);
+                compilationContext.Compilation.GetTypeByMetadataName(typeof(RemoveByAttribute).FullName!);
 
             if (targetAttr == null) {
                 return;
@@ -67,6 +67,7 @@ internal sealed class NoLocalsAttributeAnalyzer : DiagnosticAnalyzer {
                 targetSymbol.Locations[0],
                 dateTime.ToString(KDateTimeFormat, CultureInfo.InvariantCulture)
             ));
+            return;
         }
         
         ctx.ReportDiagnostic(PostRemoveByDataDiagnostic.CreateDiagnostic(
