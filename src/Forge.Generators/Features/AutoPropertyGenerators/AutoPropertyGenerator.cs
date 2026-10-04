@@ -4,13 +4,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Forge.Annotations;
 using Forge.Generators.Common.Models;
-using Forge.Generators.Features.AutoPropertyGenerator.Discovery;
-using Forge.Generators.Features.AutoPropertyGenerator.Emit;
-using Forge.Generators.Features.AutoPropertyGenerator.Models;
+using Forge.Generators.Features.AutoPropertyGenerators.Discovery;
+using Forge.Generators.Features.AutoPropertyGenerators.Emit;
+using Forge.Generators.Features.AutoPropertyGenerators.Models;
 using Microsoft.CodeAnalysis;
 using GeneratedSource = (string name, Microsoft.CodeAnalysis.Text.SourceText sourceText);
 
-namespace Forge.Generators.Features.AutoPropertyGenerator;
+namespace Forge.Generators.Features.AutoPropertyGenerators;
 
 [Generator]
 internal sealed class AutoPropertyGenerator : IIncrementalGenerator {
@@ -26,11 +26,15 @@ internal sealed class AutoPropertyGenerator : IIncrementalGenerator {
         IncrementalValuesProvider<TargetFieldModel> fields = context.SyntaxProvider.ForAttributeWithMetadataName(
             fullyQualifiedMetadataName: typeof(AutoPropertyAttribute).FullName!,
             predicate: static (_, _) => true,
-            transform: static (context, _) => new TargetFieldModel(in context)
+            transform: static (context, ct) => {
+                ct.ThrowIfCancellationRequested();
+                return new TargetFieldModel(in context);
+            }
         )
         .WithTrackingName(TrackingNames.Fields);
 
-        IncrementalValuesProvider<GroupTargetModel> groupings = fields.Collect().SelectMany(static (all, _) => {
+        IncrementalValuesProvider<GroupTargetModel> groupings = fields.Collect().SelectMany(static (all, ct) => {
+            ct.ThrowIfCancellationRequested();
             Dictionary<TypeDeclModel, List<TargetFieldModel>> map = new();
 
             foreach (TargetFieldModel field in all) {
@@ -61,10 +65,16 @@ internal sealed class AutoPropertyGenerator : IIncrementalGenerator {
         IncrementalValueProvider<NamingPolicy> namingPolicy = context.SyntaxProvider.ForAttributeWithMetadataName(
             fullyQualifiedMetadataName: typeof(AutoPropertyNamingPolicyAttribute).FullName!,
             predicate: static (_, _) => true,
-            transform: static (context, _) => AutoPropertyNamingPolicyAttributeParser.Parse(in context)
+            transform: static (context, ct) => {
+                ct.ThrowIfCancellationRequested();
+                return AutoPropertyNamingPolicyAttributeParser.Parse(in context);
+            }
         )
         .Collect()
-        .Select(static (all, _) => all.FirstOrDefault())
+        .Select(static (all, ct) => {
+            ct.ThrowIfCancellationRequested();
+            return all.FirstOrDefault();
+        })
         .WithTrackingName(TrackingNames.NamingPolicy);
         
         IncrementalValuesProvider<(GroupTargetModel Left, NamingPolicy Right)> combined = 
@@ -73,8 +83,9 @@ internal sealed class AutoPropertyGenerator : IIncrementalGenerator {
                 .WithTrackingName(TrackingNames.Combined);
         
         context.RegisterSourceOutput(combined, static (ctx, tuple) => {
-            GeneratedSource source = EmitAutoProperty.Emit(tuple.Left, tuple.Right);
+            ctx.CancellationToken.ThrowIfCancellationRequested();
             
+            GeneratedSource source = EmitAutoProperty.Emit(tuple.Left, tuple.Right);
             ctx.AddSource(source.name, source.sourceText);
         });
     }

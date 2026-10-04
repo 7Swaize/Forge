@@ -4,7 +4,7 @@ using System.Text;
 using Forge.Annotations;
 using Forge.RoslynShared;
 
-namespace Forge.Generators.Features.AutoPropertyGenerator.Emit;
+namespace Forge.Generators.Features.AutoPropertyGenerators.Emit;
 
 internal static class NamingPolicyEngine {
     private static readonly string[] KKnownPrefixes = ["m_", "f_", "s_", "t_"];

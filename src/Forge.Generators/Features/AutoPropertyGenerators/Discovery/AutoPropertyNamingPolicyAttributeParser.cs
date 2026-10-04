@@ -1,7 +1,7 @@
 using Forge.Annotations;
 using Microsoft.CodeAnalysis;
 
-namespace Forge.Generators.Features.AutoPropertyGenerator.Discovery;
+namespace Forge.Generators.Features.AutoPropertyGenerators.Discovery;
 
 internal static class AutoPropertyNamingPolicyAttributeParser {
     internal static NamingPolicy Parse(in GeneratorAttributeSyntaxContext context) {

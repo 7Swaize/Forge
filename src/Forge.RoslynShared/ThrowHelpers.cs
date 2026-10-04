@@ -1,36 +1,55 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace Forge.RoslynShared;
 
 public static class ThrowHelpers {
     [DoesNotReturn]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static TResult ThrowUnhandledBranch<TResult>(object value) =>
-        throw new InvalidOperationException($"Unhandled value '{value}' in switch statement.");
+        throw new InvalidOperationException($"Unhandled value '{value}' in switch statement");
     
     [DoesNotReturn]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static void ThrowUnhandledBranch(object value) =>
-        throw new InvalidOperationException($"Unhandled value '{value}' in switch statement.");
+        throw new InvalidOperationException($"Unhandled value '{value}' in switch statement");
     
     [DoesNotReturn]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static void ThrowUnreachable() =>
-        throw new UnreachableException("Code should not be reachable.");
+        throw new UnreachableException("Code should not be reachable");
     
     [DoesNotReturn]
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public static TResult ThrowUnreachable<TResult>() =>
+        throw new UnreachableException("Code should not be reachable");
+    
+    [DoesNotReturn]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static TReturn ThrowWeakReferenceCollected<TReturn>() where TReturn : class =>
-        throw new ObjectDisposedException(typeof(TReturn).Name, "The weak ref has been collected by the GC.");
+        throw new ObjectDisposedException(typeof(TReturn).Name, "Weak reference has been collected by the GC");
     
     [DoesNotReturn]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static TReturn ThrowConditionalWeakTableKeyCollected<TKey, TReturn>()
         where TKey : class
         where TReturn : class =>
         throw new ObjectDisposedException(typeof(TKey).Name, "The weak ref has been collected by the GC.");
+    
+    [DoesNotReturn]
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public static TReturn ThrowNonConstantExpressionException<TReturn>() =>
+        throw new NonConstantExpressionException("Expected a compile-time constant expression");
 
     [DoesNotReturn]
-    public static TResult KeyNotFoundException<TResult>(object key) =>
-        throw new KeyNotFoundException($"The given key {key} was not present in the dictionary.");
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public static TReturn ThrowEmitException<TReturn>(string message)
+        => throw new EmitException(message);
 }
 
-
 public sealed class UnreachableException(string message) : Exception(message);
+
+public sealed class NonConstantExpressionException(string message) : Exception(message);
+
+public sealed class EmitException(string message) : Exception(message);

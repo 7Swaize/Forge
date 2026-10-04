@@ -1,10 +1,10 @@
 using Forge.Annotations;
 using Forge.Generators.Common.Models;
 using Forge.Generators.Common.Models.Factories;
-using Forge.Generators.Features.AutoPropertyGenerator.Discovery;
+using Forge.Generators.Features.AutoPropertyGenerators.Discovery;
 using Microsoft.CodeAnalysis;
 
-namespace Forge.Generators.Features.AutoPropertyGenerator.Models;
+namespace Forge.Generators.Features.AutoPropertyGenerators.Models;
 
 internal sealed record TargetFieldModel {
     internal TargetFieldModel(in GeneratorAttributeSyntaxContext context) {

@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Forge.Annotations;
-using Forge.Generators.Features.AutoPropertyGenerator;
+using Forge.Generators.Features.AutoPropertyGenerators;
 using Forge.Tests.Common;
 using Microsoft.CodeAnalysis;
 using VerifyTests;

@@ -8,6 +8,8 @@
 
 #pragma warning disable 169
 
-public partial    struct Foo  {
+[global::System.CodeDom.Compiler.GeneratedCode("ForgeGenerators", "0.1.0-preview.2")]
+[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+public partial struct Foo {
     public  global::System.Int32 Value =>  _value;
 }

@@ -9,12 +9,12 @@ internal interface ITypeReferenceModel : IEquatable<ITypeReferenceModel> {
     string FQNGenericBased { get; init; }
     string FQNArityBased { get; init; }
     string FQNConstructedArgBased { get; init; }
-    string FlattenedNameNonArityBased { get; init; }
+    string FlattenedNameArityBased { get; init; }
     string? Namespace { get; init; }
     
     bool IsBasedOnTypeParameter { get; init; }
     bool IsGeneric { get; init; }
-    bool IsOpenGeneric { get; init; }
+    bool IsUnboundGeneric { get; init; }
     ITypeReferenceModel? UnboundGenericTypeRef { get; init; }
     EquatableArray<ITypeReferenceModel> TypeArguments { get; init; }
     EquatableArray<ITypeReferenceModel> TypeParameters { get; init; }

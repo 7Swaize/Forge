@@ -3,6 +3,7 @@ using System.Linq;
 using Forge.Generators.Common.Models;
 using Microsoft.CodeAnalysis;
 
+
 internal static class TypeParameterSymbolExtensions {
     extension(ITypeParameterSymbol self) {
         internal ConstraintsModel? GetTypeParamConstraints() {

@@ -3,13 +3,13 @@ using System.IO;
 using System.Text;
 using Forge.Annotations;
 using Forge.Generators.Common.Emit;
-using Forge.Generators.Features.AutoPropertyGenerator.Models;
+using Forge.Generators.Features.AutoPropertyGenerators.Models;
 using Forge.RoslynShared;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using GeneratedSource = (string name, Microsoft.CodeAnalysis.Text.SourceText sourceText);
 
-namespace Forge.Generators.Features.AutoPropertyGenerator.Emit;
+namespace Forge.Generators.Features.AutoPropertyGenerators.Emit;
 
 internal static class EmitAutoProperty {
     internal static GeneratedSource Emit(GroupTargetModel targetGroup, NamingPolicy namingPolicy) {
@@ -24,7 +24,10 @@ internal static class EmitAutoProperty {
             writer.Indent++;
         }
         
-        EmitHelpers.EmitClassDeclarationFromModel(targetGroup.TypeDecl, writer);
+        EmitHelpers.EmitGeneratedCodeAttribute(writer);
+        EmitHelpers.EmitExcludeFromCodeCoverageAttribute(writer);
+        EmitHelpers.EmitTypeDeclarationFromModel(targetGroup.TypeDecl, writer);
+        writer.Indent++;
 
         for (int i = 0; i < targetGroup.TargetFields.Length; i++) {
             WriteProperty(writer, targetGroup.TargetFields[i], namingPolicy);
@@ -44,7 +47,7 @@ internal static class EmitAutoProperty {
         }
         
         SourceText text = SourceText.From(sr.ToString(), Encoding.UTF8);
-        return ($"{targetGroup.TypeDecl.AsTypeRef.FlattenedNameNonArityBased}_AutoProperty.g.cs", text);
+        return ($"{targetGroup.TypeDecl.AsTypeRef.FlattenedNameArityBased}_AutoProperty.g.cs", text);
     }
 
     private static void WriteProperty(IndentedTextWriter writer, TargetFieldModel field, NamingPolicy namingPolicy) {

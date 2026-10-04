@@ -8,7 +8,9 @@
 
 #pragma warning disable 169
 
-public partial    class Foo  {
+[global::System.CodeDom.Compiler.GeneratedCode("ForgeGenerators", "0.1.0-preview.2")]
+[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+public partial class Foo {
     protected internal  global::System.Int32 Value {
         get => _value;
         init => _value = value;

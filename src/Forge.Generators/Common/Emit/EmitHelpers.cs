@@ -1,7 +1,5 @@
-using System;
 using System.CodeDom.Compiler;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Forge.Generators.Common.Models;
 using Forge.RoslynShared;
 using Microsoft.CodeAnalysis;
@@ -26,9 +24,18 @@ public static class EmitHelpers {
         writer.WriteLine($"#pragma warning disable 169");
     }
     
-    internal static void EmitClassDeclarationFromModel(
+    internal static void EmitGeneratedCodeAttribute(IndentedTextWriter writer) {
+        writer.WriteLine($"[global::System.CodeDom.Compiler.GeneratedCode(\"ForgeGenerators\", \"0.1.0-preview.2\")]");
+    }
+
+    internal static void EmitExcludeFromCodeCoverageAttribute(IndentedTextWriter writer) {
+        writer.WriteLine($"[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]");
+    }
+    
+    internal static void EmitTypeDeclarationFromModel(
         TypeDeclModel decl,
-        IndentedTextWriter writer)
+        IndentedTextWriter writer,
+        string[]? inheritance = null)
     {
         ITypeReferenceModel typeRef = decl.AsTypeRef;
         
@@ -36,7 +43,7 @@ public static class EmitHelpers {
         string isPartial = decl.IsPartial ? "partial " : string.Empty;
         string isSealed = decl.IsSealed && typeRef.TypeKind is not TypeKind.Struct ? "sealed " : string.Empty;
         string isStatic = decl.IsStatic ? "static " : string.Empty;
-
+        
         string typeKeyword = typeRef.TypeKind switch {
             TypeKind.Interface => "interface",
             TypeKind.Struct => typeRef.IsRecord ? "record struct" : "struct",
@@ -48,20 +55,20 @@ public static class EmitHelpers {
         string typeParams = typeRef.TypeParameters.Length > 0
             ? "<" + string.Join(", ", typeRef.TypeParameters.Select(static tp => tp.FQNGenericBased)) + ">"
             : string.Empty;
-
+        
         string constraints = typeRef.Constraints.Length > 0
             ? string.Join(" ", typeRef.Constraints.Select(static ct => ct.ToString()))
             : string.Empty;
-        
-        writer.WriteLine(
-            $"{accessibility} {isPartial} {isSealed} {isStatic} {typeKeyword} " +
-            $"{decl.TypeNameNoArityNoFQN}{typeParams} " +
-            $"{constraints} {{"
-        );
-        
-        writer.Indent++;
-    }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static string FQN(Type type) => $"global::{type.FullName}";
+        string inheritFrom = inheritance is not null
+            ? string.Join(", ", inheritance)
+            : string.Empty;
+
+        string output = $"{accessibility} {isPartial} {isSealed} {isStatic} {typeKeyword} " +
+                        $"{decl.TypeNameNoArityNoFQN}{typeParams} " +
+                        $"{(!string.IsNullOrEmpty(inheritFrom) ? $": {inheritFrom} " : "")}" +
+                        $"{constraints} {{";
+        
+        writer.WriteLine(output.CollapseRedundantWhitespace());
+    }
 }

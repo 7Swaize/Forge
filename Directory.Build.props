@@ -22,6 +22,10 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+        <PackageReference Include="Microsoft.Bcl.HashCode" PrivateAssets="all" />
+    </ItemGroup>
+
     <ItemGroup Condition="'$(UseRoslynPackages)' == 'true'">
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
             <PrivateAssets>all</PrivateAssets>

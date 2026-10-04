@@ -1,8 +1,8 @@
 using Forge.Annotations;
-using Forge.Generators.Features.AutoPropertyGenerator.Models;
+using Forge.Generators.Features.AutoPropertyGenerators.Models;
 using Microsoft.CodeAnalysis;
 
-namespace Forge.Generators.Features.AutoPropertyGenerator.Discovery;
+namespace Forge.Generators.Features.AutoPropertyGenerators.Discovery;
 
 internal static class AutoPropertyAttributeParser {
     internal static AutoPropertyAttributeArgs ParseArgs(in GeneratorAttributeSyntaxContext context) {

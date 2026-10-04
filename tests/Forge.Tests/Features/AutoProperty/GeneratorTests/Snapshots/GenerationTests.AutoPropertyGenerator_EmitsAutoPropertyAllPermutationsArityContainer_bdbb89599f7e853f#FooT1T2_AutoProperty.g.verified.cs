@@ -8,7 +8,9 @@
 
 #pragma warning disable 169
 
-public partial    class Foo<T1, T2> where T1 : class {
+[global::System.CodeDom.Compiler.GeneratedCode("ForgeGenerators", "0.1.0-preview.2")]
+[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+public partial class Foo<T1, T2> where T1 : class {
     public ref readonly T1 Value1 => ref _value1;
     
     public ref readonly T2 Value2 => ref _value2;
