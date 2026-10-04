@@ -32,32 +32,38 @@ internal sealed class BlittableAttributeAnalyzer : DiagnosticAnalyzer {
 
         INamedTypeSymbol? structLayoutAttr = ctx.Compilation.GetTypeByMetadataName(typeof(StructLayoutAttribute).FullName!);
 
-        if (structLayoutAttr is null || !target.ValidateAnnotatedWith(structLayoutAttr, out AttributeData? structLayoutAttrData)) {
-            return;
-        }
+        // Just checks the struct layout
+        if (structLayoutAttr is not null && target.ValidateAnnotatedWith(structLayoutAttr, out AttributeData? structLayoutAttrData)) {
+            if (structLayoutAttrData.ConstructorArguments.Length > 0) {
+                TypedConstant layoutArg = structLayoutAttrData.ConstructorArguments[0];
 
-        if (structLayoutAttrData.ConstructorArguments.Length > 0) {
-            TypedConstant layoutArg = structLayoutAttrData.ConstructorArguments[0];
+                if (layoutArg.Value is not null) {
+                    LayoutKind layoutKind = (LayoutKind)Convert.ToInt32(layoutArg.Value);
 
-            if (layoutArg.Value is not null) {
-                LayoutKind layoutKind = (LayoutKind)Convert.ToInt32(layoutArg.Value);
-
-                if (layoutKind == LayoutKind.Auto) {
-                    ctx.ReportDiagnostic(IncompatibleLayoutDiagnostic.CreateDiagnostic(
-                        target.Locations[0],
-                        targetAttr
-                    ));
+                    if (layoutKind == LayoutKind.Auto) {
+                        ctx.ReportDiagnostic(IncompatibleLayoutDiagnostic.CreateDiagnostic(
+                            target.Locations[0],
+                            target
+                        ));
+                    }
                 }
             }
         }
 
         foreach (IFieldSymbol field in target.GetMembers().OfType<IFieldSymbol>()) {
-            if (!IsBlittable(field.Type)) {
-                ctx.ReportDiagnostic(ContainedTypeNotBlittableDiagnostic.CreateDiagnostic(
-                    field.Locations[0],
-                    field.Type
-                ));
+            if (field.IsStatic) {
+                continue;
+                
             }
+            
+            if (IsBlittable(field.Type)) {
+                continue;
+            }
+            
+            ctx.ReportDiagnostic(ContainedTypeNotBlittableDiagnostic.CreateDiagnostic(
+                field.Locations[0],
+                field.Type
+            ));
         }
     }
 
@@ -70,6 +76,14 @@ internal sealed class BlittableAttributeAnalyzer : DiagnosticAnalyzer {
             return true;
         }
         
+        if (type.NullableAnnotation == NullableAnnotation.Annotated) {
+            return false;
+        }
+
+        if (type.SpecialType is SpecialType.System_Char or SpecialType.System_Boolean or SpecialType.System_Decimal) {
+            return false;
+        }
+        
         if (type is not INamedTypeSymbol { TypeKind: TypeKind.Struct } named) {
             return false;
         }
@@ -78,7 +92,7 @@ internal sealed class BlittableAttributeAnalyzer : DiagnosticAnalyzer {
             if (field.IsStatic) {
                 continue;
             }
-
+            
             if (field.IsFixedSizeBuffer) {
                 if (!IsBlittable(field.Type.As<IPointerTypeSymbol>().PointedAtType)) {
                     return false;
@@ -90,7 +104,7 @@ internal sealed class BlittableAttributeAnalyzer : DiagnosticAnalyzer {
             }
         }
         
-        return false;
+        return true;
     }
 
     private static bool IsPrimitiveBlittable(ITypeSymbol typeSymbol) {
