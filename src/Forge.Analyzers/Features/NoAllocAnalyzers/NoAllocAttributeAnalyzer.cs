@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Forge.Analyzers.Features.NoAllocAnalyzers;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-internal sealed class NoAllocAnalyzer : DiagnosticAnalyzer {
+internal sealed class NoAllocAttributeAnalyzer : DiagnosticAnalyzer {
     public override void Initialize(AnalysisContext context) {
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
         context.EnableConcurrentExecution();

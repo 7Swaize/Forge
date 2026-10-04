@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Forge.Annotations;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor/
@@ -49,4 +50,11 @@ public static class A {
     public static void C([CompileTimeConstant] DateTime date) {
         
     }
+}
+
+[Blittable]
+[StructLayout(LayoutKind.Sequential)]
+public unsafe struct MyBlittableStruct {
+    public int Id;
+    public fixed int BlittableValues[10];
 }
