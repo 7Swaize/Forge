@@ -61,11 +61,11 @@ public sealed class MagicAttribute(ulong shouldEqual) : Attribute {
 /// least significant bit. Their widths must add up to a multiple of 8.
 /// </remarks>
 [AttributeUsage(AttributeTargets.Field)]
-public sealed class BitsAttribute(ulong bits) : Attribute {
+public sealed class BitsAttribute(int bits) : Attribute {
     /// <summary>
     /// The width of the field, in bits.
     /// </summary>
-    public ulong Bits { get; private set; } = bits;
+    public int Bits { get; private set; } = bits;
 }
 
 /// <summary>
@@ -154,11 +154,11 @@ public sealed class ExternalContextAttribute : Attribute { }
 /// Specifies the number of padding bytes that exist before the field. These bytes are skipped during parsing.
 /// </summary>
 [AttributeUsage(AttributeTargets.Field)]
-public sealed class PadAttribute(uint bytes) : Attribute {
+public sealed class PadAttribute(int bytes) : Attribute {
     /// <summary>
     /// Gets the number of padding bytes that exist before the field.
     /// </summary>
-    public uint Bytes { get; private set; } = bytes;
+    public int Bytes { get; private set; } = bytes;
 }
 
 
@@ -167,11 +167,11 @@ public sealed class PadAttribute(uint bytes) : Attribute {
 /// During parsing this skips to the next multiple of <c>boundary</c>.
 /// </summary>
 [AttributeUsage(AttributeTargets.Field)]
-public sealed class AlignAttribute(uint boundary) : Attribute {
+public sealed class AlignAttribute(int boundary) : Attribute {
     /// <summary>
     /// Gets the alignment boundary, in bytes, required for the field's offset.
     /// </summary>
-    public uint Boundary { get; private set; } = boundary;
+    public int Boundary { get; private set; } = boundary;
 }
 
 
@@ -233,4 +233,22 @@ public enum Endian {
 public enum ParseStatus {
     /// <summary>The input was parsed successfully.</summary>
     Ok = 0,
+ 
+    /// <summary>The input is a valid prefix but too short. Append more bytes and call again.</summary>
+    NeedMoreData = 1,
+ 
+    /// <summary>A <see cref="MagicAttribute"/> field did not match.</summary>
+    BadMagic = 2,
+ 
+    /// <summary>A <see cref="MaxAttribute"/> bound was exceeded.</summary>
+    TooLarge = 3,
+ 
+    /// <summary>A checksum field did not match the computed checksum.</summary>
+    BadChecksum = 4,
+ 
+    /// <summary>
+    /// The input is structurally invalid and more bytes will not fix it (for example a body shorter than its own
+    /// length fields claim, or a negative length).
+    /// </summary>
+    Malformed = 5,
 }

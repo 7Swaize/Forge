@@ -28,6 +28,10 @@ internal sealed class TypeReferenceModelFactory {
                 IsUnboundGeneric = named.IsUnboundGenericType;
                 Constraints = named.GetTypeParamConstraints();
 
+                EnumUnderlyingType = named.TypeKind == TypeKind.Enum
+                    ? named.EnumUnderlyingType?.SpecialType ?? SpecialType.None
+                    : SpecialType.None;
+
                 if (IsGeneric && !IsBasedOnTypeParameter && !named.IsUnboundGenericType) {
                     UnboundGenericTypeRef = 
                         factory.CreateOrGetTypeReferenceModel(named.ConstructUnboundGenericType());
@@ -120,6 +124,7 @@ internal sealed class TypeReferenceModelFactory {
         public bool IsTrueValueType { get; init; }
         public TypeKind TypeKind { get; init; }
         public SpecialType SpecialType { get; init; }
+        public SpecialType? EnumUnderlyingType { get; init; }
 
         public ITypeReferenceModel? BaseType { get; init; }
         public EquatableArray<ITypeReferenceModel> ImmediateInterfaces { get; init; }

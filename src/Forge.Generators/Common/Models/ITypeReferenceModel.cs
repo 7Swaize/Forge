@@ -23,6 +23,7 @@ internal interface ITypeReferenceModel : IEquatable<ITypeReferenceModel> {
     bool IsTrueValueType { get; init; }
     TypeKind TypeKind { get; init; }
     SpecialType SpecialType { get; init; }
+    SpecialType? EnumUnderlyingType { get; init; }
     
     ITypeReferenceModel? BaseType { get; init; }
     EquatableArray<ITypeReferenceModel> ImmediateInterfaces { get; init; }

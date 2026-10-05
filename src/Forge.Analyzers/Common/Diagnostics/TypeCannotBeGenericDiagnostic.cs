@@ -2,20 +2,19 @@ using Microsoft.CodeAnalysis;
 
 namespace Forge.Analyzers.Common.Diagnostics;
 
-internal static class TypeMustBePartialDiagnostic {
+internal static class TypeCannotBeGenericDiagnostic {
     internal static DiagnosticDescriptor CreateDescriptor() =>
         new DiagnosticDescriptor(
-            id: "FRG0001",
-            title: "Type must be partial",
-            messageFormat: "Type '{0}' must be declared as partial",
+            id: "FRG0002",
+            title: "Type cannot be generic",
+            messageFormat: "The type '{0}' that the attribute is applied to cannot be generic",
             category: "Usage",
             defaultSeverity: DiagnosticSeverity.Error,
             isEnabledByDefault: true,
-            description:
-                "The target type must be declared with the 'partial' modifier in order to support source generation.",
+            description: "Attributes of this type cannot be applied to generic types.",
             helpLinkUri: null
         );
-
+    
     internal static Diagnostic CreateDiagnostic(Location location, ITypeSymbol type) =>
         Diagnostic.Create(
             CreateDescriptor(),

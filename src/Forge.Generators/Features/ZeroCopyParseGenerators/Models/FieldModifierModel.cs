@@ -20,8 +20,8 @@ internal readonly record struct FieldModifierModel {
     internal static FieldModifierModel Magic(ulong shouldEqual) =>
         new() { Kind = FieldModifierKind.Magic, ULongArg = shouldEqual };
  
-    internal static FieldModifierModel Bits(ulong bits) =>
-        new() { Kind = FieldModifierKind.Bits, ULongArg = bits };
+    internal static FieldModifierModel Bits(int bits) =>
+        new() { Kind = FieldModifierKind.Bits, IntArg1 = bits };
  
     internal static FieldModifierModel Max(ulong max) =>
         new() { Kind = FieldModifierKind.Max, ULongArg = max };
@@ -38,11 +38,11 @@ internal readonly record struct FieldModifierModel {
     internal static FieldModifierModel ExternalContext() =>
         new() { Kind = FieldModifierKind.ExternalContext };
  
-    internal static FieldModifierModel Pad(uint bytes) =>
-        new() { Kind = FieldModifierKind.Pad, ULongArg = bytes };
+    internal static FieldModifierModel Pad(int bytes) =>
+        new() { Kind = FieldModifierKind.Pad, IntArg1 = bytes };
  
-    internal static FieldModifierModel Align(uint boundary) =>
-        new() { Kind = FieldModifierKind.Align, ULongArg = boundary };
+    internal static FieldModifierModel Align(int boundary) =>
+        new() { Kind = FieldModifierKind.Align, IntArg1 = boundary };
  
     internal static FieldModifierModel FieldOffset(int offset) =>
         new() { Kind = FieldModifierKind.FieldOffset, IntArg1 = offset };
@@ -84,6 +84,9 @@ internal interface IFieldModifierVisitor<out TResult> {
     TResult VisitChecksum(in FieldModifierModel model);
 }
 
+internal readonly struct VoidVisitor {
+    internal static VoidVisitor Default = new();
+}
 
 [Flags]
 internal enum FieldModifierKind : uint {

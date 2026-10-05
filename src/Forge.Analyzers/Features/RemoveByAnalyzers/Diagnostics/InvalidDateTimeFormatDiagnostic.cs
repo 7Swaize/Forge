@@ -11,7 +11,8 @@ internal static class InvalidDateTimeFormatDiagnostic {
             category: "Usage",
             defaultSeverity: DiagnosticSeverity.Error,
             isEnabledByDefault: true,
-            description: "Dates provided to the [RemoveBy] attribute must be valid and correctly formatted to be evaluated."
+            description: "Dates provided to the [RemoveBy] attribute must be valid and correctly formatted to be evaluated.",
+            helpLinkUri: null
         );
     
     internal static Diagnostic CreateDiagnostic(Location location, string invalidDate) =>

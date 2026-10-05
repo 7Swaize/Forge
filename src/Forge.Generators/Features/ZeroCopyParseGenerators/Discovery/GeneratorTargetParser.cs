@@ -47,7 +47,7 @@ internal static class GeneratorTargetParser {
         INamedTypeSymbol? targetAttr =
             ctx.SemanticModel.Compilation.GetTypeByMetadataName(typeof(DisableParseOrderOptimizationsAttribute).FullName!);
 
-        foreach (AttributeData attr in ctx.Attributes) {
+        foreach (AttributeData attr in ctx.TargetSymbol.GetAttributes()) {
             if (SymbolEqualityComparer.Default.Equals(attr.AttributeClass, targetAttr)) {
                 return true;
             }
@@ -60,7 +60,7 @@ internal static class GeneratorTargetParser {
         INamedTypeSymbol? blittableAttr =
             ctx.SemanticModel.Compilation.GetTypeByMetadataName(typeof(BlittableAttribute).FullName!);
         
-        foreach (AttributeData attr in ctx.Attributes) {
+        foreach (AttributeData attr in ctx.TargetSymbol.GetAttributes()) {
             if (SymbolEqualityComparer.Default.Equals(attr.AttributeClass, blittableAttr)) {
                 return true;
             }
@@ -73,7 +73,7 @@ internal static class GeneratorTargetParser {
         INamedTypeSymbol? structLayoutAttr =
             ctx.SemanticModel.Compilation.GetTypeByMetadataName(typeof(StructLayoutAttribute).FullName!);
         
-        foreach (AttributeData attr in ctx.Attributes) {
+        foreach (AttributeData attr in ctx.TargetSymbol.GetAttributes()) {
             if (SymbolEqualityComparer.Default.Equals(attr.AttributeClass, structLayoutAttr)) {
                 return (
                     ExtractNthCompileTimeConstantArg<LayoutKind>(attr, 0),
@@ -83,7 +83,7 @@ internal static class GeneratorTargetParser {
         }
 
         return (
-            isBlittable ? LayoutKind.Sequential : LayoutKind.Explicit,
+            isBlittable ? LayoutKind.Sequential : LayoutKind.Auto,
             0
         );
     }
@@ -115,7 +115,7 @@ internal static class GeneratorTargetParser {
             model = FieldModifierModel.Magic(ExtractNthCompileTimeConstantArg<ulong>(attr, 0));
         }
         else if (fullName == BitsAttributeName) {
-            model = FieldModifierModel.Bits(ExtractNthCompileTimeConstantArg<ulong>(attr, 0));
+            model = FieldModifierModel.Bits(ExtractNthCompileTimeConstantArg<int>(attr, 0));
         }
         else if (fullName == MaxAttributeName) {
             model = FieldModifierModel.Max(ExtractNthCompileTimeConstantArg<ulong>(attr, 0));
@@ -133,10 +133,10 @@ internal static class GeneratorTargetParser {
             model = FieldModifierModel.ExternalContext();
         }
         else if (fullName == PadAttributeName) {
-            model = FieldModifierModel.Pad(ExtractNthCompileTimeConstantArg<uint>(attr, 0));
+            model = FieldModifierModel.Pad(ExtractNthCompileTimeConstantArg<int>(attr, 0));
         }
         else if (fullName == AlignAttributeName) {
-            model = FieldModifierModel.Align(ExtractNthCompileTimeConstantArg<uint>(attr, 0));
+            model = FieldModifierModel.Align(ExtractNthCompileTimeConstantArg<int>(attr, 0));
         }
         else if (fullName == FieldOffsetAttributeName) {
             model = FieldModifierModel.FieldOffset(ExtractNthCompileTimeConstantArg<int>(attr, 0));
@@ -164,8 +164,8 @@ internal static class GeneratorTargetParser {
     }
 
     private static ITypeReferenceModel ExtractNthTypeArg(AttributeData attr, int index, TypeReferenceModelFactory typeRefFactory) {
-        return attr.ConstructorArguments.Length > index
-            ? typeRefFactory.CreateOrGetTypeReferenceModel((ITypeSymbol)attr.ConstructorArguments[index].Value!)
+        return attr.AttributeClass!.TypeArguments.Length > index
+            ? typeRefFactory.CreateOrGetTypeReferenceModel(attr.AttributeClass!.TypeArguments[index])
             : ThrowHelpers.ThrowIndexOutOfRangeException<ITypeReferenceModel>();
     }
     
