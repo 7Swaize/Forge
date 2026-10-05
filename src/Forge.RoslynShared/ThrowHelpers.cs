@@ -7,6 +7,11 @@ namespace Forge.RoslynShared;
 public static class ThrowHelpers {
     [DoesNotReturn]
     [MethodImpl(MethodImplOptions.NoInlining)]
+    public static TResult ThrowIndexOutOfRangeException<TResult>() =>
+        throw new IndexOutOfRangeException();
+    
+    [DoesNotReturn]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static TResult ThrowUnhandledBranch<TResult>(object value) =>
         throw new InvalidOperationException($"Unhandled value '{value}' in switch statement");
     

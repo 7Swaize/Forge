@@ -21,7 +21,6 @@ internal interface ITypeReferenceModel : IEquatable<ITypeReferenceModel> {
     EquatableArray<ConstraintsModel> Constraints { get; init; }
     
     bool IsTrueValueType { get; init; }
-    bool IsRecord { get; init; }
     TypeKind TypeKind { get; init; }
     SpecialType SpecialType { get; init; }
     

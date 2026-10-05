@@ -107,7 +107,7 @@ public sealed class LengthFromAttribute(string fieldName) : Attribute {
 /// field type.
 /// </remarks>
 [AttributeUsage(AttributeTargets.Field)]
-public sealed class Scaled(Type wireType, double factor) : Attribute {
+public sealed class ScaledAttribute(Type wireType, double factor) : Attribute {
     /// <summary>
     /// The type stored on the wire (e.g. <c>typeof(short)</c>).
     /// </summary>
@@ -127,10 +127,10 @@ public sealed class Scaled(Type wireType, double factor) : Attribute {
 /// </summary>
 /// <remarks>
 /// The referenced field must be declared before the annotated field. It may be a parsed field
-/// (such as a flag bit) or an <see cref="ExternalContext"/> field supplied by the caller.
+/// (such as a flag bit) or an <see cref="ExternalContextAttribute"/> field supplied by the caller.
 /// </remarks>
 [AttributeUsage(AttributeTargets.Field)]
-public sealed class WhenPresent(string fieldName) : Attribute {
+public sealed class WhenPresentAttribute(string fieldName) : Attribute {
     /// <summary>
     /// The name of the earlier <see cref="bool"/> field that controls whether this field is present.
     /// </summary>
@@ -147,14 +147,14 @@ public sealed class WhenPresent(string fieldName) : Attribute {
 /// that control which optional fields appear in an inner body.
 /// </remarks>
 [AttributeUsage(AttributeTargets.Field)]
-public sealed class ExternalContext : Attribute { }
+public sealed class ExternalContextAttribute : Attribute { }
 
 
 /// <summary>
 /// Specifies the number of padding bytes that exist before the field. These bytes are skipped during parsing.
 /// </summary>
 [AttributeUsage(AttributeTargets.Field)]
-public sealed class Pad(uint bytes) : Attribute {
+public sealed class PadAttribute(uint bytes) : Attribute {
     /// <summary>
     /// Gets the number of padding bytes that exist before the field.
     /// </summary>
@@ -167,7 +167,7 @@ public sealed class Pad(uint bytes) : Attribute {
 /// During parsing this skips to the next multiple of <c>boundary</c>.
 /// </summary>
 [AttributeUsage(AttributeTargets.Field)]
-public sealed class Align(uint boundary) : Attribute {
+public sealed class AlignAttribute(uint boundary) : Attribute {
     /// <summary>
     /// Gets the alignment boundary, in bytes, required for the field's offset.
     /// </summary>

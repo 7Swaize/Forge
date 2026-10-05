@@ -30,6 +30,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Forge.Annotations\Forge.Annotations.csproj" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Forge.Runtime\Forge.Runtime.csproj" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Forge.RoslynShared\Forge.RoslynShared.csproj" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Forge.Analyzers\Forge.Analyzers.csproj" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Forge.Generators\Forge.Generators.csproj" ReferenceOutputAssembly="false" />
@@ -43,6 +44,8 @@
         <None Include="..\Forge.Annotations\$(Out)\Forge.Annotations.dll"
               Pack="true" PackagePath="lib/$(TargetFramework)" Visible="false" />
         <None Include="..\Forge.Annotations\$(Out)\Forge.Annotations.xml"
+              Pack="true" PackagePath="lib/$(TargetFramework)" Visible="false" />
+        <None Include="..\Forge.Runtime\$(Out)\Forge.Runtime.dll"
               Pack="true" PackagePath="lib/$(TargetFramework)" Visible="false" />
 
         <None Include="..\Forge.Annotations\$(Out)\Forge.Annotations.dll"

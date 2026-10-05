@@ -53,6 +53,17 @@ public static class TypeSymbolExtensions {
         genericsOptions: SymbolDisplayGenericsOptions.None
     );
     
+    private static readonly SymbolDisplayFormat MetadataFormFQNGlobal = new(
+        globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.Included,
+        typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
+        genericsOptions: SymbolDisplayGenericsOptions.None
+    );
+    
+    private static readonly SymbolDisplayFormat MetadataFormFQNNoGlobal = new(
+        globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.Omitted,
+        typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
+        genericsOptions: SymbolDisplayGenericsOptions.None
+    );
     
     extension(ITypeSymbol self) {
         /// <summary>
@@ -72,6 +83,12 @@ public static class TypeSymbolExtensions {
         public string GetConstructedTypeFQN(bool includeGlobal = true) {
             return self.ToDisplayString(
                 includeGlobal ? ConstructedTypeFQNGlobal : ConstructedTypeFQNNoGlobal
+            );
+        }
+
+        public string GetMetadataStyleFQN(bool includeGlobal = true) {
+            return self.ToDisplayString(
+                includeGlobal ? MetadataFormFQNGlobal : MetadataFormFQNNoGlobal
             );
         }
         
@@ -181,6 +198,64 @@ public static class TypeSymbolExtensions {
     
             // For arrays, pointers, etc.
             return self;
+        }
+
+        public bool IsBlittable() {
+            if (self.IsPrimitiveBlittable()) {
+                return true;
+            }
+
+            if (self.TypeKind is TypeKind.Enum or TypeKind.Pointer or TypeKind.FunctionPointer) {
+                return true;
+            }
+
+            if (self.NullableAnnotation == NullableAnnotation.Annotated) {
+                return false;
+            }
+
+            if (self.SpecialType is SpecialType.System_Char or SpecialType.System_Boolean or SpecialType.System_Decimal) {
+                return false;
+            }
+
+            if (self is not INamedTypeSymbol { TypeKind: TypeKind.Struct } named) {
+                return false;
+            }
+
+            foreach (IFieldSymbol field in named.GetMembers().OfType<IFieldSymbol>()) {
+                if (field.IsStatic) {
+                    continue;
+                }
+            
+                if (field.IsFixedSizeBuffer) {
+                    if (!field.Type.As<IPointerTypeSymbol>().PointedAtType.IsBlittable()) {
+                        return false;
+                    }
+                }
+
+                if (!field.Type.IsBlittable()) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        
+        private bool IsPrimitiveBlittable() {
+            return self.SpecialType switch {
+                SpecialType.System_Byte => true,
+                SpecialType.System_SByte => true,
+                SpecialType.System_Int16 => true,
+                SpecialType.System_UInt16 => true,
+                SpecialType.System_Int32 => true,
+                SpecialType.System_UInt32 => true,
+                SpecialType.System_Int64 => true,
+                SpecialType.System_UInt64 => true,
+                SpecialType.System_IntPtr => true,
+                SpecialType.System_UIntPtr => true,
+                SpecialType.System_Single => true,
+                SpecialType.System_Double => true,
+                _ => false
+            };
         }
     }
 }

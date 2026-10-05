@@ -44,6 +44,9 @@ internal readonly record struct FieldModifierModel {
     internal static FieldModifierModel Align(uint boundary) =>
         new() { Kind = FieldModifierKind.Align, ULongArg = boundary };
  
+    internal static FieldModifierModel FieldOffset(int offset) =>
+        new() { Kind = FieldModifierKind.FieldOffset, IntArg1 = offset };
+        
     internal static FieldModifierModel Checksum(ITypeReferenceModel algorithm, int skipLeading = 0, int skipTrailing = 0) =>
         new() { Kind = FieldModifierKind.Checksum, TypeArg = algorithm, IntArg1 = skipLeading, IntArg2 = skipTrailing };
  
@@ -59,6 +62,7 @@ internal readonly record struct FieldModifierModel {
             FieldModifierKind.ExternalContext => visitor.VisitExternalContext(in this),
             FieldModifierKind.Pad => visitor.VisitPad(in this),
             FieldModifierKind.Align => visitor.VisitAlign(in this),
+            FieldModifierKind.FieldOffset => visitor.VisitFieldOffset(in this),
             FieldModifierKind.Checksum => visitor.VisitChecksum(in this),
             _ => ThrowHelpers.ThrowUnhandledBranch<TResult>(Kind)
         };
@@ -76,6 +80,7 @@ internal interface IFieldModifierVisitor<out TResult> {
     TResult VisitExternalContext(in FieldModifierModel model);
     TResult VisitPad(in FieldModifierModel model);
     TResult VisitAlign(in FieldModifierModel model);
+    TResult VisitFieldOffset(in FieldModifierModel model);
     TResult VisitChecksum(in FieldModifierModel model);
 }
 
@@ -97,4 +102,7 @@ internal enum FieldModifierKind : uint {
  
     WhenPresent = 1u << 8,
     ExternalContext = 1u << 9,
+    
+    // External
+    FieldOffset = 1u << 10,
 }

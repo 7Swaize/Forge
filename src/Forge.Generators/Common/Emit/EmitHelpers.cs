@@ -38,24 +38,26 @@ public static class EmitHelpers {
         string[]? inheritance = null)
     {
         ITypeReferenceModel typeRef = decl.AsTypeRef;
-        
+    
         string accessibility = decl.AccessModifier.AsDeclString();
         string isPartial = decl.IsPartial ? "partial " : string.Empty;
         string isSealed = decl.IsSealed && typeRef.TypeKind is not TypeKind.Struct ? "sealed " : string.Empty;
         string isStatic = decl.IsStatic ? "static " : string.Empty;
-        
+        string isReadonly = decl.IsReadonly ? "readonly " : string.Empty;
+        string isRefLike = decl.IsRefLike ? "ref " : string.Empty;
+    
         string typeKeyword = typeRef.TypeKind switch {
             TypeKind.Interface => "interface",
-            TypeKind.Struct => typeRef.IsRecord ? "record struct" : "struct",
+            TypeKind.Struct => decl.IsRecord ? "record struct" : "struct",
             TypeKind.Enum => "enum",
-            TypeKind.Class => typeRef.IsRecord ? "record" : "class",
+            TypeKind.Class => decl.IsRecord ? "record" : "class",
             _ => ThrowHelpers.ThrowUnhandledBranch<string>(typeRef.TypeKind)
         };
-        
+    
         string typeParams = typeRef.TypeParameters.Length > 0
             ? "<" + string.Join(", ", typeRef.TypeParameters.Select(static tp => tp.FQNGenericBased)) + ">"
             : string.Empty;
-        
+    
         string constraints = typeRef.Constraints.Length > 0
             ? string.Join(" ", typeRef.Constraints.Select(static ct => ct.ToString()))
             : string.Empty;
@@ -64,11 +66,12 @@ public static class EmitHelpers {
             ? string.Join(", ", inheritance)
             : string.Empty;
 
-        string output = $"{accessibility} {isPartial} {isSealed} {isStatic} {typeKeyword} " +
+        string output = $"{accessibility} {isPartial} {isSealed} {isStatic} {isReadonly} {isRefLike} {typeKeyword} " +
                         $"{decl.TypeNameNoArityNoFQN}{typeParams} " +
                         $"{(!string.IsNullOrEmpty(inheritFrom) ? $": {inheritFrom} " : "")}" +
                         $"{constraints} {{";
-        
+    
         writer.WriteLine(output.CollapseRedundantWhitespace());
+        writer.Indent++;
     }
 }

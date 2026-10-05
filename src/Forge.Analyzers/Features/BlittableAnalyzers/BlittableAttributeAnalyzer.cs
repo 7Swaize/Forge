@@ -56,7 +56,7 @@ internal sealed class BlittableAttributeAnalyzer : DiagnosticAnalyzer {
                 
             }
             
-            if (IsBlittable(field.Type)) {
+            if (field.Type.IsBlittable()) {
                 continue;
             }
             
@@ -65,64 +65,6 @@ internal sealed class BlittableAttributeAnalyzer : DiagnosticAnalyzer {
                 field.Type
             ));
         }
-    }
-
-    private static bool IsBlittable(ITypeSymbol type) {
-        if (IsPrimitiveBlittable(type)) {
-            return true;
-        }
-        
-        if (type.TypeKind is TypeKind.Enum or TypeKind.Pointer or TypeKind.FunctionPointer) {
-            return true;
-        }
-        
-        if (type.NullableAnnotation == NullableAnnotation.Annotated) {
-            return false;
-        }
-
-        if (type.SpecialType is SpecialType.System_Char or SpecialType.System_Boolean or SpecialType.System_Decimal) {
-            return false;
-        }
-        
-        if (type is not INamedTypeSymbol { TypeKind: TypeKind.Struct } named) {
-            return false;
-        }
-        
-        foreach (IFieldSymbol field in named.GetMembers().OfType<IFieldSymbol>()) {
-            if (field.IsStatic) {
-                continue;
-            }
-            
-            if (field.IsFixedSizeBuffer) {
-                if (!IsBlittable(field.Type.As<IPointerTypeSymbol>().PointedAtType)) {
-                    return false;
-                }
-            }
-
-            if (!IsBlittable(field.Type)) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-
-    private static bool IsPrimitiveBlittable(ITypeSymbol typeSymbol) {
-        return typeSymbol.SpecialType switch {
-            SpecialType.System_Byte => true,
-            SpecialType.System_SByte => true,
-            SpecialType.System_Int16 => true,
-            SpecialType.System_UInt16 => true,
-            SpecialType.System_Int32 => true,
-            SpecialType.System_UInt32 => true,
-            SpecialType.System_Int64 => true,
-            SpecialType.System_UInt64 => true,
-            SpecialType.System_IntPtr => true,
-            SpecialType.System_UIntPtr => true,
-            SpecialType.System_Single => true,
-            SpecialType.System_Double => true,
-            _ => false
-        };
     }
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(

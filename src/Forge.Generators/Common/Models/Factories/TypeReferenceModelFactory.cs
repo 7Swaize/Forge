@@ -64,7 +64,6 @@ internal sealed class TypeReferenceModelFactory {
             }
             
             IsTrueValueType = symbol.IsValueType;
-            IsRecord = symbol.IsRecord;
             TypeKind = symbol.TypeKind;
             SpecialType = symbol.SpecialType;
 
@@ -119,7 +118,6 @@ internal sealed class TypeReferenceModelFactory {
         public EquatableArray<ConstraintsModel> Constraints { get; init; }
 
         public bool IsTrueValueType { get; init; }
-        public bool IsRecord { get; init; }
         public TypeKind TypeKind { get; init; }
         public SpecialType SpecialType { get; init; }
 

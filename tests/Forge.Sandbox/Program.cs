@@ -53,7 +53,6 @@ public static class A {
 }
 
 [Blittable]
-[StructLayout(LayoutKind.Sequential)]
 public unsafe struct MyBlittableStruct {
     public int Id;
     public fixed int BlittableValues[10];

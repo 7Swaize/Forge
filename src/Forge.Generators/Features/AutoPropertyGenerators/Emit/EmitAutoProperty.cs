@@ -27,7 +27,6 @@ internal static class EmitAutoProperty {
         EmitHelpers.EmitGeneratedCodeAttribute(writer);
         EmitHelpers.EmitExcludeFromCodeCoverageAttribute(writer);
         EmitHelpers.EmitTypeDeclarationFromModel(targetGroup.TypeDecl, writer);
-        writer.Indent++;
 
         for (int i = 0; i < targetGroup.TargetFields.Length; i++) {
             WriteProperty(writer, targetGroup.TargetFields[i], namingPolicy);

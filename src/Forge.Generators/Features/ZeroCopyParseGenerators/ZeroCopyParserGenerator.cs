@@ -1,7 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
 using Forge.Annotations;
+using Forge.Generators.Features.ZeroCopyParseGenerators.Emit;
 using Forge.Generators.Features.ZeroCopyParseGenerators.Models;
 using Microsoft.CodeAnalysis;
+using GeneratedSource = (string name, Microsoft.CodeAnalysis.Text.SourceText sourceText);
 
 namespace Forge.Generators.Features.ZeroCopyParseGenerators;
 
@@ -9,7 +11,7 @@ namespace Forge.Generators.Features.ZeroCopyParseGenerators;
 internal sealed class ZeroCopyParserGenerator : IIncrementalGenerator {
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     internal static class TrackingNames {
-        internal const string ParseGeneratorTargets = nameof(ParseGeneratorTargets); 
+        internal const string ParseGeneratorTargets = nameof(ParseGeneratorTargets);
     }
     
     public void Initialize(IncrementalGeneratorInitializationContext context) {
@@ -21,5 +23,12 @@ internal sealed class ZeroCopyParserGenerator : IIncrementalGenerator {
                 return new GeneratorTargetModel(in ctx);
             }
         ).WithTrackingName(TrackingNames.ParseGeneratorTargets);
+        
+        context.RegisterSourceOutput(targets, (ctx, target) => {
+            ctx.CancellationToken.ThrowIfCancellationRequested();
+            
+            GeneratedSource source = EmitParser.Emit(target);
+            ctx.AddSource(source.name, source.sourceText);
+        });
     }
 }
