@@ -24,6 +24,7 @@ internal sealed record GeneratorTargetModel {
         
         AggregateModifierDescriptor = TargetFields
             .AsArrayUnsafe()
+            .SelectMany(fieldTarget => fieldTarget.Modifiers.AsArrayUnsafe())
             .Aggregate(FieldModifierKind.None, (current, field) => current | field.Kind);
     }
     
